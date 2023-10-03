@@ -67,7 +67,7 @@ pipeline {
             emailext(
                 subject: "Pipeline Status: ${currentBuild.result}",
                 body: "Pipeline completed with status: ${currentBuild.result}",
-                to: "ahmad.rahman003@gmail.com",
+                to: "cyriacjoseplackattu@gmail.com",
                 attachmentsPattern: '**/*'
             )
         }
