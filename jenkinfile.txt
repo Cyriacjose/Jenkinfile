@@ -1,0 +1,63 @@
+pipeline{
+	agent any
+	stages{
+		stage(‘Build’){
+			steps{
+			    echo "Build automation tool: Maven"
+                
+			}
+		}
+		stage(‘Unit_and_Integration_Tests’){
+			steps{
+			    echo "JUnit for unit testing"
+               		    
+			}
+			post{
+		           always{
+		        	    emailext to: "anjojosephapj@gmail.com",
+			            subject: "Unit_and_Integration_Tests: ${currentBuild.currentResult}",
+			            body: "Unit_and_Integration_Tests status : ${currentBuild.currentResult}",
+			            attachLog: true
+	                
+                	    }
+           		 }
+
+		}
+		stage(‘Code_Analysis’){
+			steps{
+			    echo "SonarQube for code analysis"
+			}
+		}
+		stage(‘Security_Scan’){
+			steps{
+			    echo "OWASP ZAP for security scanning"
+			}
+			post{
+		           always{
+		        	    emailext to: "anjojosephapj@gmail.com",
+			            subject: "Security_Scan: ${currentBuild.currentResult}",
+			            body: "Security_Scan status : ${currentBuild.currentResult}",
+			            attachLog: true
+	                
+                	    }
+           		 }
+		}
+		stage(‘Deploy_to_Staging’){
+			steps{
+			    echo "SSH for deploying the application to staging"
+			    
+			}
+		}
+		stage(‘Integration_Tests_on_Staging’){
+			steps{
+			    echo "Selenium for Integration Tests on Staging"
+			}
+		}
+		stage(‘Deploy_to_production’){
+			steps{
+			    echo "SSH for deploying the application to production servers"
+			}
+		}
+		
+	}
+}
