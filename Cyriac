@@ -1,75 +1,63 @@
-pipeline {
-    agent any
-
-    stages {
-        stage('Build') {
-            steps {
-                // Build the code using Maven
-                sh 'mvn clean package'
-            }
-        }
-        
-        stage('Unit and Integration Tests') {
-            steps {
-                // Run unit tests using JUnit
-                sh 'mvn test'
+pipeline{
+	agent any
+	stages{
+		stage(‘Build’){
+			steps{
+			    echo "Build automation tool: Maven"
                 
-                // Run integration tests using a suitable framework
-                // Modify the command as per your application's requirements
-                sh 'mvn integration-test'
-            }
-        }
-        
-        stage('Code Analysis') {
-            steps {
-                // Run code analysis using SonarQube or Checkstyle
-                // Modify the command as per your tool and configuration
-                sh 'mvn sonar:sonar'
-            }
-        }
-        
-        stage('Security Scan') {
-            steps {
-                // Perform security scan using OWASP ZAP or SonarQube with security plugins
-                // Modify the command as per your tool and configuration
-                sh 'mvn owasp:dependency-check'
-            }
-        }
-        
-        stage('Deploy to Staging') {
-            steps {
-                // Deploy the application to a staging server using AWS CodeDeploy or other tool
-                // Modify the command as per your deployment configuration
-                sh 'aws deploy --application MyApp --deployment-group Staging --region us-west-2'
-            }
-        }
-        
-        stage('Integration Tests on Staging') {
-            steps {
-                // Run integration tests on the staging environment using a suitable framework
-                // Modify the command as per your application's requirements
-                sh 'mvn integration-test'
-            }
-        }
-        
-        stage('Deploy to Production') {
-            steps {
-                // Deploy the application to a production server using AWS CodeDeploy or other tool
-                // Modify the command as per your deployment configuration
-                sh 'aws deploy --application MyApp --deployment-group Production --region us-west-2'
-            }
-        }
-    }
-    
-    post {
-        always {
-            // Send email notifications at the end of test and security scan stages
-            emailext(
-                subject: "Pipeline Status: ${currentBuild.result}",
-                body: "Pipeline completed with status: ${currentBuild.result}",
-                to: "cyriacjoseplackattu@gmail.com",
-                attachmentsPattern: '**/*'
-            )
-        }
-    }
+			}
+		}
+		stage(‘Unit_and_Integration_Tests’){
+			steps{
+			    echo "JUnit for unit testing"
+               		    
+			}
+			post{
+		           always{
+		        	    emailext to: "cyriacjoseplackattu@gmail.com",
+			            subject: "Unit_and_Integration_Tests: ${currentBuild.currentResult}",
+			            body: "Unit_and_Integration_Tests status : ${currentBuild.currentResult}",
+			            attachLog: true
+	                
+                	    }
+           		 }
+
+		}
+		stage(‘Code_Analysis’){
+			steps{
+			    echo "SonarQube for code analysis"
+			}
+		}
+		stage(‘Security_Scan’){
+			steps{
+			    echo "OWASP ZAP for security scanning"
+			}
+			post{
+		           always{
+		        	    emailext to: "cyriacjoseplackattu@gmail.com",
+			            subject: "Security_Scan: ${currentBuild.currentResult}",
+			            body: "Security_Scan status : ${currentBuild.currentResult}",
+			            attachLog: true
+	                
+                	    }
+           		 }
+		}
+		stage(‘Deploy_to_Staging’){
+			steps{
+			    echo "SSH for deploying the application to staging"
+			    
+			}
+		}
+		stage(‘Integration_Tests_on_Staging’){
+			steps{
+			    echo "Selenium for Integration Tests on Staging"
+			}
+		}
+		stage(‘Deploy_to_production’){
+			steps{
+			    echo "SSH for deploying the application to production servers"
+			}
+		}
+		
+	}
 }
