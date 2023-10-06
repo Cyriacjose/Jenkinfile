@@ -59,22 +59,22 @@ pipeline{
 			}
 		}
 		 post {
-        success {
+       		   success {
 				echo "Pipeline executed successfully!"
 				emailext attachLog: true,
 				body: 'Build is successful',
 				subject: 'Jenkins Build status',
-	    		to: 'vishnu.m321@gmail.com'
-        }
+	    		to: 'cyriacioseplackattu@gmail.com'
+        		 }
         
-        failure {
+        	    failure {
 				echo "Pipeline execution failed!"
 				emailext attachLog: true,
 				body: "Build failed",
 				subject: "Jenkins Build status",
-				to: "vishnu.m321@gmail.com"
-        }
+				to: "cyriacioseplackattu@gmail.com"
+        		    }
 		
 	}
-}
+   }
 }
