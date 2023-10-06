@@ -58,6 +58,23 @@ pipeline{
 			    echo "SSH for deploying the application to production servers"
 			}
 		}
+		 post {
+        success {
+				echo "Pipeline executed successfully!"
+				emailext attachLog: true,
+				body: 'Build is successful',
+				subject: 'Jenkins Build status',
+	    		to: 'vishnu.m321@gmail.com'
+        }
+        
+        failure {
+				echo "Pipeline execution failed!"
+				emailext attachLog: true,
+				body: "Build failed",
+				subject: "Jenkins Build status",
+				to: "vishnu.m321@gmail.com"
+        }
 		
 	}
+}
 }
